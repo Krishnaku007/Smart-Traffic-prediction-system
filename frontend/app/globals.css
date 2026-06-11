@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-1: #eef7fb;
+  --bg-2: #f8fbff;
+  --surface: #ffffffcc;
+  --text: #0d2a38;
+  --muted: #5a7280;
+}
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(circle at 10% 10%, #c8ecff 0%, transparent 35%),
+    radial-gradient(circle at 85% 15%, #ffefd1 0%, transparent 28%),
+    linear-gradient(145deg, var(--bg-1), var(--bg-2));
+  color: var(--text);
+  font-family: Manrope, sans-serif;
+}
+
+.panel {
+  @apply rounded-2xl border border-white/60 bg-white/70 p-4 shadow-glass backdrop-blur-md;
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-rise {
+  animation: riseIn 0.6s ease both;
+}
