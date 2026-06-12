@@ -1,8 +1,10 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Literal
 
 from pydantic import BaseModel, EmailStr, Field
 
+
+# ─── Auth ────────────────────────────────────────────────────────────────────
 
 class RegisterRequest(BaseModel):
     name: str
@@ -20,13 +22,15 @@ class TokenResponse(BaseModel):
     token_type: str = "bearer"
 
 
+# ─── Prediction ───────────────────────────────────────────────────────────────
+
 class PredictRequest(BaseModel):
     road_id: int
-    date: str
-    time: str
+    date: str  # YYYY-MM-DD
+    time: str  # HH:MM or HH:MM:SS
     temperature: float
     holiday: int = Field(ge=0, le=1)
-    weekday: int = Field(ge=0, le=6)
+    weekday: int = Field(ge=0, le=6)  # 0=Monday … 6=Sunday (ISO)
     weather: int = Field(ge=0, le=3)
 
 
@@ -37,6 +41,19 @@ class PredictResponse(BaseModel):
     estimated_travel_time_min: float
     prediction_time: datetime
 
+    model_config = {"from_attributes": True}
+
+
+class PredictionOut(BaseModel):
+    id: int
+    road_id: int
+    predicted_volume: int
+    prediction_time: datetime
+
+    model_config = {"from_attributes": True}
+
+
+# ─── Traffic ─────────────────────────────────────────────────────────────────
 
 class TrafficPoint(BaseModel):
     road_id: int
@@ -47,6 +64,17 @@ class TrafficPoint(BaseModel):
     congestion_level: Literal["Low", "Medium", "High"]
     timestamp: datetime
 
+
+class TrafficDataOut(BaseModel):
+    id: int
+    road_id: int
+    traffic_volume: int
+    timestamp: datetime
+
+    model_config = {"from_attributes": True}
+
+
+# ─── Routes ───────────────────────────────────────────────────────────────────
 
 class RouteRequest(BaseModel):
     source_road_id: int
@@ -59,12 +87,27 @@ class RouteResponse(BaseModel):
     route_path: list[int]
 
 
+# ─── Analytics ───────────────────────────────────────────────────────────────
+
 class AnalyticsResponse(BaseModel):
     hourly: dict[str, float]
     daily: dict[str, float]
     weekly: dict[str, float]
     monthly: dict[str, float]
 
+
+# ─── Admin ────────────────────────────────────────────────────────────────────
+
+class UserOut(BaseModel):
+    id: int
+    name: str
+    email: str
+    role: str
+
+    model_config = {"from_attributes": True}
+
+
+# ─── AI Assistant ─────────────────────────────────────────────────────────────
 
 class ChatRequest(BaseModel):
     question: str

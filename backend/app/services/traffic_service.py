@@ -1,19 +1,20 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.models.road import Road
 from app.models.traffic_data import TrafficData
 from app.services.prediction_service import classify_congestion
 
 
-def current_traffic_snapshot(roads: list[Road], rows: list[TrafficData]):
+def current_traffic_snapshot(roads: list[Road], rows: list[TrafficData]) -> list[dict]:
+    """Return the latest traffic reading per road as a JSON-serialisable list."""
     latest_by_road: dict[int, TrafficData] = {}
     for row in rows:
         existing = latest_by_road.get(row.road_id)
         if existing is None or row.timestamp > existing.timestamp:
             latest_by_road[row.road_id] = row
 
+    now = datetime.now(timezone.utc)
     payload = []
-    now = datetime.utcnow()
     for road in roads:
         data = latest_by_road.get(road.road_id)
         volume = data.traffic_volume if data else 0
@@ -25,7 +26,7 @@ def current_traffic_snapshot(roads: list[Road], rows: list[TrafficData]):
                 "longitude": road.longitude,
                 "traffic_volume": volume,
                 "congestion_level": classify_congestion(volume),
-                "timestamp": data.timestamp if data else now,
+                "timestamp": (data.timestamp if data else now).isoformat(),
             }
         )
     return payload

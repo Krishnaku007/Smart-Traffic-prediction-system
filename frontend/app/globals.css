@@ -4,6 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Design tokens ───────────────────────────────────────────── */
 :root {
   --bg-1: #eef7fb;
   --bg-2: #f8fbff;
@@ -12,6 +13,7 @@
   --muted: #5a7280;
 }
 
+/* ─── Body ────────────────────────────────────────────────────── */
 body {
   min-height: 100vh;
   background: radial-gradient(circle at 10% 10%, #c8ecff 0%, transparent 35%),
@@ -21,10 +23,45 @@ body {
   font-family: Manrope, sans-serif;
 }
 
+/* ─── Glass card (dashboard panels) ──────────────────────────── */
 .panel {
   @apply rounded-2xl border border-white/60 bg-white/70 p-4 shadow-glass backdrop-blur-md;
 }
 
+/* ─── Auth page ───────────────────────────────────────────────── */
+.auth-bg {
+  background: radial-gradient(circle at 20% 20%, #bfdbfe 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, #ddd6fe 0%, transparent 40%),
+    linear-gradient(145deg, #f0f9ff, #f5f3ff);
+}
+
+.auth-card {
+  @apply rounded-3xl border border-white/70 bg-white/80 p-8 shadow-glass backdrop-blur-xl;
+}
+
+.auth-label {
+  @apply mb-1 block text-xs font-semibold text-slate-500 uppercase tracking-wide;
+}
+
+.auth-input {
+  @apply w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-sm
+    placeholder-slate-400 outline-none transition
+    focus:border-sky-400 focus:ring-2 focus:ring-sky-100;
+}
+
+.auth-btn {
+  @apply w-full rounded-xl bg-gradient-to-r from-sky-600 to-indigo-600 py-3 font-semibold
+    text-white shadow-md transition hover:from-sky-700 hover:to-indigo-700 hover:shadow-lg
+    disabled:opacity-60 disabled:cursor-not-allowed;
+}
+
+/* ─── Spinner ─────────────────────────────────────────────────── */
+.auth-spinner {
+  @apply inline-block h-4 w-4 rounded-full border-2 border-white/30 border-t-white
+    animate-spin;
+}
+
+/* ─── Animations ──────────────────────────────────────────────── */
 @keyframes riseIn {
   from {
     opacity: 0;

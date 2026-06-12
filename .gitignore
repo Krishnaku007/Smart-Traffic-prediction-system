@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .venv/
+*.sqlite
 
 # Node
 node_modules/
@@ -10,8 +11,8 @@ node_modules/
 out/
 
 # ML artifacts
-ml/models/*.joblib
-ml/models/*.json
+**/models/*.joblib
+**/models/*.json
 
 # Env files
 .env
@@ -20,3 +21,4 @@ ml/models/*.json
 # IDE
 .vscode/
 .DS_Store
+
